@@ -1,0 +1,1 @@
+A Wordle bot used to practice Python programming
