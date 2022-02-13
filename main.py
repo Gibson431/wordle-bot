@@ -12,31 +12,19 @@ def load_cache():
     gameController.letter_cache.update_scores(possible_answers)
     return
 
-
-def calc_best_answer():
-    answer = gameController.word_cache.get_best_answer(gameController.letter_cache)
-    return answer
-
+def init():
+    load_cache()
+    gameController.last_guess = gameController.word_cache.get_best_answer(gameController.letter_cache)[0]
 
 def main():
-    load_cache()
-    best = calc_best_answer()
-    print(best)
-    # print(gameController.word_cache.available_words)
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    gameController.vet_words()
-    best = calc_best_answer()
-    print(f"Words left: {len(gameController.word_cache.available_words)}")
-    print(f'Suggested word: {best}')
-    print(f'All words:')
-    df = pd.DataFrame.from_dict(gameController.word_cache.available_words)
-    print(df)
-    # print(gameController.word_cache.available_words)
-    # letter_cache.export()
-    # word_cache.export()
-
-    return
-
+    while True:
+        print(f'All words:')
+        df = pd.DataFrame.from_dict(gameController.word_cache.available_words)
+        print(df)
+        print(f"Possible words left: {len(gameController.word_cache.available_words)}")
+        print(f"Next Suggested word: {gameController.next_word()}")
+        # gameController.print_info()
 
 if __name__ == "__main__":
+    init()
     main()

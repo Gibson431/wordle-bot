@@ -52,7 +52,7 @@ class WordCache():
         self.update_words(word_list)
         return
 
-    def update_words(self, words):
+    def update_words(self, words=possible_answers):
         self.available_words = dict({})
         for word in words:
             self.available_words[f'{word}'] = 0
