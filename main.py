@@ -15,6 +15,7 @@ def load_cache():
 def init():
     load_cache()
     gameController.last_guess = gameController.word_cache.get_best_answer(gameController.letter_cache)[0]
+    # letter_cache.export()
 
 def main():
     while True:

@@ -1,6 +1,3 @@
-from unittest import case
-
-
 class Controller():
     """
     Controls the gameplay
@@ -23,13 +20,12 @@ class Controller():
         new_words = []
         if (not len(self.found_letters)) and (not len(self.blacklist)):  # if no letters have been found
             # return all previous words
-            return dict(self.word_cache.available_words).keys()
+            return list(dict(self.word_cache.available_words).keys())
 
-        for word in dict(self.word_cache.available_words).keys():
+        for word in list(dict(self.word_cache.available_words).keys()):
             isViable = True
             for letter in self.found_letters:
                 if letter not in word:
-
                     isViable = False
                     break
             for letter in self.blacklist:
@@ -43,7 +39,7 @@ class Controller():
         self.word_cache.update_words(new_words)
 
         # return list of new available words
-        return dict(self.word_cache.available_words).keys()
+        return list(dict(self.word_cache.available_words).keys())
 
     def vet_words_strict(self):
         """
@@ -51,7 +47,7 @@ class Controller():
         """
         new_words = []
         if self.found_letters_strict != ["", "", "", "", ""]:
-            for word in dict(self.word_cache.available_words).keys():
+            for word in list(dict(self.word_cache.available_words).keys()):
                 isViable = True
                 for index, letter in enumerate(self.found_letters_strict):
                     if letter == "":  # skip if location is empty
@@ -82,7 +78,7 @@ class Controller():
                 new_words.remove(word)
 
         self.word_cache.update_words(new_words)
-        return dict(self.word_cache.available_words).keys()
+        return list(dict(self.word_cache.available_words).keys())
 
     def calc_result(self, result):
         """
@@ -109,13 +105,25 @@ class Controller():
                 self.found_letters.append(self.last_guess[index])
                 self.blacklist_location[index].append(self.last_guess[index])
             elif letter == "g":
+                self.found_letters.append(self.last_guess[index])
                 self.found_letters_strict[index] = self.last_guess[index]
         return
+
+    def check_letters(self):
+        for letter in self.found_letters:
+            if letter in self.blacklist:
+                self.blacklist.remove(letter)
+        return None
+
+    def sort(self):
+        self.check_letters()
+        self.vet_words()
+        return None
 
     def next_word(self):
         result = input(f"last result based on guess '{self.last_guess}': ")
         self.calc_result(result)
-        self.vet_words()
+        self.sort()
         suggested_word = self.word_cache.get_best_answer(self.letter_cache)
         self.last_guess = suggested_word[0]
         return suggested_word
