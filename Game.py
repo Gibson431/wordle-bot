@@ -101,6 +101,7 @@ class Controller():
         for index, letter in enumerate(result):
             if letter == "n":
                 self.blacklist.append(self.last_guess[index])
+                self.blacklist_location[index].append(self.last_guess[index])
             elif letter == "y":
                 self.found_letters.append(self.last_guess[index])
                 self.blacklist_location[index].append(self.last_guess[index])
